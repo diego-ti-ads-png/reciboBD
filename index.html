@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recibo</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="form-panel">
+        <div class="panel-header">
+          <h1>Recibo</h1>
+          <p>Preencha todos os dados e imprima ou gere PDF.</p>
+        </div>
+
+        <form id="receiptForm">
+          <section>
+            <div class="section-title">Dados do emitente</div>
+            <div class="field-grid">
+              <label>Nome / Razão social<input data-model="emitenteNome" placeholder="Nome / Razão social"></label>
+              <label>CPF / CNPJ<input data-model="emitenteDocumento" placeholder="CPF ou CNPJ"></label>
+            </div>
+            <div class="field-grid">
+              <label>Endereço<input data-model="emitenteEndereco" placeholder="Endereço"></label>
+              <label>Telefone<input data-model="emitenteTelefone" placeholder="Telefone"></label>
+            </div>
+          </section>
+
+          <section>
+            <div class="section-title">Dados do pagador</div>
+            <div class="field-grid">
+              <label>Nome do pagador<input data-model="pagadorNome" placeholder="Nome do pagador"></label>
+              <label>CPF/CNPJ<input data-model="pagadorDocumento" placeholder="CPF/CNPJ"></label>
+            </div>
+            <div class="field-grid">
+              <label>Endereço<input data-model="pagadorEndereco" placeholder="Endereço do pagador"></label>
+              <label>Localidade / Cidade<input data-model="localidade" placeholder="Localidade"></label>
+            </div>
+          </section>
+
+          <section>
+            <div class="field-grid">
+              <label>Valor recebido<input data-model="valorRecebido" placeholder="0,00"></label>
+              <label>Valor por extenso<input data-model="valorExtenso" placeholder="Valor por extenso"></label>
+            </div>
+            <div class="field-grid">
+              <label>Referência / Serviço<select data-model="referencia"><option>Prestação de serviços</option><option>Compra</option></select></label>
+              <label>Forma de pagamento<select data-model="formaPagamento"><option>PIX</option><option>Débito</option><option>Crédito</option><option>Dinheiro</option></select></label>
+            </div>
+            <div class="field-grid">
+              <label>Data<input type="date" data-model="dataRecibo"></label>
+              <label>Número / Código<input data-model="codigoRecibo" placeholder="001/2026"></label>
+            </div>
+            <label>Observações / Declaração<textarea rows="4" data-model="observacoes"></textarea></label>
+          </section>
+
+          <div class="actions">
+            <button type="button" id="clearBtn" class="secondary">Limpar</button>
+            <button type="button" id="saveBtn" class="success">Salvar recibo</button>
+            <button type="button" id="printBtn" class="primary">Imprimir / PDF</button>
+          </div>
+
+          <div class="saved-panel">
+            <h3>Recibos salvos</h3>
+            <input id="searchReceipt" type="search" placeholder="Pesquisar por nome, código, valor ou data">
+            <div class="field-grid">
+              <input id="dateFromFilter" type="date">
+              <input id="dateToFilter" type="date">
+            </div>
+            <div id="savedReceiptsList" class="saved-list"></div>
+            <div class="export-actions">
+              <button type="button" id="exportBtn" class="import-button">Exportar JSON</button>
+              <input id="importInput" type="file" accept="application/json" style="display:none">
+            </div>
+          </div>
+        </form>
+      </aside>
+
+      <main class="preview-panel">
+        <div class="receipt" id="receiptPreview">
+          <header class="receipt-header">
+            <div class="brand-block">
+              <img src="BD Sports FINAL RGB PNG.png" alt="Logo" class="brand-logo">
+              <div class="company-meta">
+                <div class="company-name" data-preview="emitenteNome">Organização</div>
+                <div class="document" data-preview="emitenteDocumento">CNPJ</div>
+                <div class="company-meta-line" data-preview="emitenteEndereco">Endereço</div>
+                <div class="company-meta-line" data-preview="emitenteTelefone">Telefone</div>
+              </div>
+            </div>
+            <div class="receipt-badge">RECIBO</div>
+          </header>
+
+          <div class="receipt-meta">
+            <div><span>Data:</span> <strong data-preview="dataRecibo">--</strong></div>
+            <div><span>Cód.:</span> <strong data-preview="codigoRecibo">--</strong></div>
+          </div>
+
+          <div class="receipt-body">
+            <p>
+              Recebi de <strong data-preview="pagadorNome">[nome do pagador]</strong>, documento <strong data-preview="pagadorDocumento">[CPF/CNPJ]</strong>, residente em <strong data-preview="pagadorEndereco">[endereço]</strong>, localizado em <strong data-preview="localidade">[cidade]</strong>, a quantia de <strong data-preview="valorRecebido">[valor]</strong> (<span data-preview="valorExtenso">[valor por extenso]</span>), referente a <strong data-preview="referencia">[referência]</strong>, pela forma de pagamento <strong data-preview="formaPagamento">[forma]</strong>.
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="receipt-subtitle">Dados do emitente</div>
+            <div class="info-grid">
+              <div>
+                <span>Nome / Razão social</span>
+                <strong data-preview="emitenteNome">[emitente]</strong>
+              </div>
+              <div>
+                <span>CPF / CNPJ</span>
+                <strong data-preview="emitenteDocumento">[CPF/CNPJ]</strong>
+              </div>
+              <div>
+                <span>Endereço</span>
+                <strong data-preview="emitenteEndereco">[endereço]</strong>
+              </div>
+              <div>
+                <span>Telefone</span>
+                <strong data-preview="emitenteTelefone">[telefone]</strong>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="info-grid info-grid-secondary">
+              <div>
+                <span>Observações</span>
+                <strong data-preview="observacoes">[observações]</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="signature-area">
+            <div class="signature-block">
+              <div class="line"></div>
+              <span>Assinatura do emitente</span>
+            </div>
+            <div class="signature-block">
+              <div class="line"></div>
+              <span>Assinatura do recebedor</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
